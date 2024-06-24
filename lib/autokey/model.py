@@ -345,10 +345,30 @@ class AbstractWindowFilter:
 
         return None
 
+    # def _should_trigger_window_title(self, window_info):
+    #     r = self.get_applicable_regex()  # type: typing.Pattern
+    #     if r is not None:
+    #         return bool(r.match(window_info.wm_title)) or bool(r.match(window_info.wm_class))
+    #     else:
+    #         return True
+
+
     def _should_trigger_window_title(self, window_info):
         r = self.get_applicable_regex()  # type: typing.Pattern
+
+        _logger.info("------------ Custom validations")
+        _logger.info("This wn_title: {}".format(window_info.wm_title))
+        _logger.info("This wn_class: {}".format(window_info.wm_class))
+        _logger.info("This r: {}".format(r))
+
+
         if r is not None:
-            return bool(r.match(window_info.wm_title)) or bool(r.match(window_info.wm_class))
+            regex_matched = bool(r.match(window_info.wm_title)) or bool(r.match(window_info.wm_class))
+            
+            if not regex_matched :
+                _logger.info("Regex not matched. It returns false")
+            
+            return regex_matched
         else:
             return True
 
